@@ -1,4 +1,4 @@
-package io.pivotal;
+package io.pivotal.view.form;
 
 import lombok.Data;
 

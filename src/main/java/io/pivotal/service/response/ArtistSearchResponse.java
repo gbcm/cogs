@@ -1,4 +1,4 @@
-package io.pivotal;
+package io.pivotal.service.response;
 
 import com.google.gson.annotations.SerializedName;
 import lombok.Data;

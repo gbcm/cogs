@@ -2,12 +2,10 @@ package io.pivotal.controller;
 
 import feign.Feign;
 import feign.gson.GsonDecoder;
-import io.pivotal.ArtistSearchResponse;
-import io.pivotal.IFeignDiscogsService;
+import io.pivotal.service.response.ArtistSearchResponse;
+import io.pivotal.service.IFeignDiscogsService;
 import io.pivotal.config.Config;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 /**
  * Created by pivotal on 2/12/16.

@@ -17,10 +17,11 @@
     </li>
 </th:ul>
 
-<form action="#" th:action="@{/}" th:object="${submittedArtistId}" method="post">
-    <input type="text" th:field="*{discogId}" />
+<form action="#" th:action="@{/searchResults}" th:object="${submittedArtistName}" method="post">
+    <input type="text" th:field="*{artistName}" />
     <button type="submit">Submit artist</button>
 </form>
+
 </body>
 
 </html>

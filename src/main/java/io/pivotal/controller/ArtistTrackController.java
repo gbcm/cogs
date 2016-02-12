@@ -2,10 +2,13 @@ package io.pivotal.controller;
 
 import feign.Feign;
 import feign.gson.GsonDecoder;
-import io.pivotal.IFeignDiscogsService;
-import io.pivotal.SubmittedArtistId;
+import io.pivotal.config.Config;
+import io.pivotal.service.IFeignDiscogsService;
+import io.pivotal.service.response.ArtistSearchResponse;
+import io.pivotal.view.form.SubmittedArtistId;
 import io.pivotal.model.Artist;
 import io.pivotal.model.ArtistRepository;
+import io.pivotal.view.form.SubmittedArtistName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,13 +25,13 @@ public class ArtistTrackController {
     ArtistRepository artistRepository;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String doTheThing(Model model, SubmittedArtistId submittedArtistId){
+    public String home(Model model, SubmittedArtistId submittedArtistId, SubmittedArtistName submittedArtistName){
         model.addAttribute("artists", artistRepository.findAll());
         return "index";
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.POST)
-    public String addNewPost(@Valid SubmittedArtistId submittedArtistId, BindingResult bindingResult, Model model) {
+    @RequestMapping(value = "/searchResults", method = RequestMethod.POST)
+    public String searchForArtist(@Valid SubmittedArtistName submittedArtistName, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "index";
         }
@@ -36,10 +39,8 @@ public class ArtistTrackController {
         IFeignDiscogsService discogsService = Feign.builder()
                 .decoder(new GsonDecoder())
                 .target(IFeignDiscogsService.class, "https://api.discogs.com/");
-
-        int i = discogsService.getReleases(submittedArtistId.getDiscogId()).getReleases();
-        Artist a = new Artist(submittedArtistId.getDiscogId(), submittedArtistId.getDiscogId(), i);
-        artistRepository.save(a);
-        return doTheThing(model, submittedArtistId);
+        ArtistSearchResponse asr = discogsService.searchArtists(submittedArtistName.getArtistName(), Config.getDiscogsToken());
+        model.addAttribute("artists", asr.getResults());
+        return "searchResults";
     }
 }
