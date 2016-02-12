@@ -1,0 +1,26 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>COGS!</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../../css/cogs.css" th:href="@{/css/cogs.css}"/>
+</head>
+
+<body>
+
+
+<th:ul th:each="artist, artStat : ${artists}">
+    <li th:text="${artist.discogsId} + ' ' + ${artist.name} + ' ' + ${artist.releaseCount}">
+
+    </li>
+</th:ul>
+
+<form action="#" th:action="@{/}" th:object="${submittedArtistId}" method="post">
+    <input type="text" th:field="*{discogId}" />
+    <button type="submit">Submit artist</button>
+</form>
+</body>
+
+</html>
