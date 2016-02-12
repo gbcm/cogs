@@ -1,6 +1,7 @@
 package io.pivotal.controller;
 
 import feign.Feign;
+import feign.gson.GsonDecoder;
 import io.pivotal.IFeignDiscogsService;
 import io.pivotal.SubmittedArtistId;
 import io.pivotal.model.Artist;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.validation.Valid;
 
 @Controller
-public class ArtistTest {
+public class ArtistTrackController {
 
     @Autowired
     ArtistRepository artistRepository;
@@ -33,6 +34,7 @@ public class ArtistTest {
         }
 
         IFeignDiscogsService discogsService = Feign.builder()
+                .decoder(new GsonDecoder())
                 .target(IFeignDiscogsService.class, "https://api.discogs.com/");
 
         int i = discogsService.getReleases(submittedArtistId.getDiscogId()).getReleases();
