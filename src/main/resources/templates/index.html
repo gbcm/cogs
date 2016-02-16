@@ -10,16 +10,11 @@
 
 <body>
 
+COGS:
 
-<th:ul th:each="artist, artStat : ${artists}">
-    <li th:text="${artist.discogsId} + ' ' + ${artist.name} + ' ' + ${artist.releaseCount}">
-
-    </li>
-</th:ul>
-
-<form action="#" th:action="@{/searchResults}" th:object="${submittedArtistName}" method="post">
-    <input type="text" th:field="*{artistName}" />
-    <button type="submit">Submit artist</button>
+<form action="#" th:action="@{/}" th:object="${submittedUserName}" method="post">
+    <input type="text" th:field="*{userName}" />
+    <button type="submit">"Login"</button>
 </form>
 
 </body>

@@ -12,7 +12,7 @@ import java.util.Set;
 
 @Data
 @Entity
-public class Artist implements Serializable {
+public class CogsUser implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -21,17 +21,17 @@ public class Artist implements Serializable {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @Column(nullable = false, unique = true)
-    private String discogsId;
+    @OneToMany
+    private List<Artist> trackedArtists;
 
     @OneToMany
-    private List<Release> releases;
+    private List<Release> hiddenReleases;
 
-    protected Artist() {}
+    protected CogsUser() {}
 
-    public Artist(String name, String discogsId) {
+    public CogsUser(String name) {
         this.name = name;
-        this.discogsId = discogsId;
-        releases = new ArrayList<>();
+        trackedArtists = new ArrayList<>();
+        hiddenReleases = new ArrayList<>();
     }
 }
