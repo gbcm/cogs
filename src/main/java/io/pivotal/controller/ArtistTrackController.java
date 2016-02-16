@@ -5,6 +5,7 @@ import feign.gson.GsonDecoder;
 import io.pivotal.config.Config;
 import io.pivotal.service.IFeignDiscogsService;
 import io.pivotal.service.response.ArtistSearchResponse;
+import io.pivotal.service.response.ReleasesResponse;
 import io.pivotal.view.form.SubmittedArtistId;
 import io.pivotal.model.Artist;
 import io.pivotal.model.ArtistRepository;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -42,5 +44,16 @@ public class ArtistTrackController {
         ArtistSearchResponse asr = discogsService.searchArtists(submittedArtistName.getArtistName(), Config.getDiscogsToken());
         model.addAttribute("artists", asr.getResults());
         return "searchResults";
+    }
+
+    @RequestMapping(value = "/artistReleases/{discogsId}", method = RequestMethod.GET)
+    public String searchForArtist(Model model, @PathVariable String discogsId) {
+        IFeignDiscogsService discogsService = Feign.builder()
+                .decoder(new GsonDecoder())
+                .target(IFeignDiscogsService.class, "https://api.discogs.com/");
+
+        ReleasesResponse rel = discogsService.getReleases(discogsId);
+        model.addAttribute("releases", rel.getRelevantReleases());
+        return "artistReleases";
     }
 }

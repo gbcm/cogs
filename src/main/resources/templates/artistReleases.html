@@ -5,9 +5,8 @@
 </head>
 <body>
 
-<th:ul th:each="artist, artStat : ${artists}">
-    <li>
-        <a th:href="'/artistReleases/' + ${artist.discogsId}" th:text="${artist.name}" />
+<th:ul th:each="release, relStat : ${releases}">
+    <li th:text="${release.title} + ' ' + ${release.year}">
     </li>
 </th:ul>
 
