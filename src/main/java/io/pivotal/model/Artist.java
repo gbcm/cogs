@@ -22,7 +22,7 @@ public class Artist implements Serializable {
     private String name;
 
     @Column(nullable = false, unique = true)
-    private String discogsId;
+    private String  discogsId;
 
     @OneToMany
     private List<Release> releases;

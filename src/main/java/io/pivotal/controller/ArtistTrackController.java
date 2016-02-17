@@ -7,6 +7,7 @@ import io.pivotal.model.*;
 import io.pivotal.service.IFeignDiscogsService;
 import io.pivotal.service.response.ArtistSearchResponse;
 import io.pivotal.service.response.ReleasesResponse;
+import io.pivotal.view.form.ArtistReleasePresenter;
 import io.pivotal.view.form.SubmittedArtistName;
 import io.pivotal.view.form.SubmittedCheckedReleases;
 import io.pivotal.view.form.SubmittedUserName;
@@ -50,11 +51,19 @@ public class ArtistTrackController {
 
     @RequestMapping(value = "/home/", method = RequestMethod.GET)
     public String homeGet(@ModelAttribute("userId") long userId,
-                          Model model,
-                          SubmittedArtistName submittedArtistName) {
+                          Model model) {
         CogsUser cogsUser = cogsUserRepository.findOne(userId);
         model.addAttribute("userName", cogsUser.getName());
-        model.addAttribute("artists", cogsUser.getTrackedArtists());
+
+        List<ArtistReleasePresenter> arps = cogsUser.getTrackedArtists().stream()
+                .map(x -> new ArtistReleasePresenter(x.getName(),
+                        getReleases(x.getDiscogsId()).stream()
+                                .filter(z -> !cogsUser.getHiddenReleases().contains(z))
+                                .map(y -> y.getName()).collect(Collectors.toList())))
+                .collect(Collectors.toList());
+
+        model.addAttribute("submittedArtistName", new SubmittedArtistName());
+        model.addAttribute("artists", arps);
         return "home";
     }
 
@@ -124,7 +133,7 @@ public class ArtistTrackController {
         model.addAttribute("userName", cogsUser.getName());
         model.addAttribute("artists", cogsUser.getTrackedArtists());
 
-        return "home";
+        return homeGet(userId ,model);
     }
 
     private List<Release> getReleases(@ModelAttribute("artistDiscogsId") String artistDiscogsId) {

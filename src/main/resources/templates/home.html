@@ -12,11 +12,14 @@
 
 <p th:text="'Welcome ' + ${userName}"></p>
 
-<th:ul th:each="artist, artStat : ${artists}">
-    <li th:text="${artist.discogsId} + ' ' + ${artist.name}">
-
+<ul th:each="artist : ${artists}">
+    <li >
+        <p th:text="${artist.name}"></p>
+        <ul th:each="release : ${artist.releases}">
+            <li th:text="'&nbsp;' + ${release}"></li>
+        </ul>
     </li>
-</th:ul>
+</ul>
 
 <form action="#" th:action="@{/home/}" th:object="${submittedArtistName}" method="post">
     <input type="text" th:field="*{artistName}" />
