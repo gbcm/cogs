@@ -13,7 +13,7 @@
 <p th:text="'Welcome ' + ${userName}"></p>
 
 <th:ul th:each="artist, artStat : ${artists}">
-    <li th:text="${artist.discogsId} + ' ' + ${artist.name} + ' ' + ${artist.releaseCount}">
+    <li th:text="${artist.discogsId} + ' ' + ${artist.name}">
 
     </li>
 </th:ul>

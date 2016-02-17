@@ -21,9 +21,10 @@ public class ReleasesResponse {
     }
 
     @Data
-    static class Release{
+    public static class Release{
         private String title;
         private String role;
+        private String artist;
         private int year;
         private String type;
         @SerializedName("id")

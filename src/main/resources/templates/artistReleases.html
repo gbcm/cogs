@@ -5,10 +5,21 @@
 </head>
 <body>
 
-<th:ul th:each="release, relStat : ${releases}">
-    <li th:text="${release.title} + ' ' + ${release.year}">
-    </li>
-</th:ul>
+
+<form action="#" th:action="@{/artistReleases/}" th:object="${submittedCheckedReleases}" method="post">
+    <h2 th:text="${artistName}"></h2>
+    Select the releases you don't care about
+    <th:ul th:each="release, relStat : ${releases}">
+        <li>
+            <input type="checkbox" th:field="*{releaseDiscogsIds}"
+                   th:text="${release.title} + ' ' + ${release.year}"
+                   th:value="${release.discogsId}"/>
+        </li>
+    </th:ul>
+    <input type="hidden" name="artistName" th:value="${artistName}"/>
+    <input type="hidden" name="artistDiscogsId" th:value="${artistDiscogsId}"/>
+    <button type="submit">Begin tracking artist</button>
+</form>
 
 </body>
 </html>

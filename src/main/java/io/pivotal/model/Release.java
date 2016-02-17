@@ -25,8 +25,9 @@ public class Release implements Serializable {
 
     protected Release() {}
 
-    public Release(String name, String discogsId) {
+    public Release(String name, String discogsId, int year) {
         this.name = name;
         this.discogsId = discogsId;
+        this.year = year;
     }
 }
